@@ -4,9 +4,10 @@
  */
 
 var express = require('express')
+  , routes = require('./routes')
   , http = require('http')
   , path = require('path');
-
+require('date-utils');
 var app = express();
 
 // all environments
@@ -26,17 +27,11 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-function createRoute (view) {
-  return function (req, res) {
-    res.render(view);
-  };
-}
-
-app.get('/', createRoute('index'));
-app.get('/vielsen', createRoute('vielsen'));
-app.get('/festen', createRoute('festen'));
-app.get('/onsker', createRoute('onsker'));
-app.get('/kontakt', createRoute('kontakt'));
+app.get('/', routes.index);
+app.get('/vielsen', routes.create('vielsen'));
+app.get('/festen', routes.create('festen'));
+app.get('/onsker', routes.create('onsker'));
+app.get('/kontakt', routes.create('kontakt'));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
